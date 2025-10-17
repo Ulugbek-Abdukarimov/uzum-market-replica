@@ -1,0 +1,64 @@
+/* ========== RESET ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ========== GLOBAL BASE STYLES ========== */
+html, body {
+  height: 100%;
+  font-family: "Inter", "Arial", sans-serif;
+  background-color: #f5f6fa;
+  color: #222;
+}
+
+/* Remove underline for all links */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Common button base */
+button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: none;
+  font-family: inherit;
+}
+
+/* Centering helper (for reuse) */
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Container width similar to Uzum layout */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Reusable colors */
+:root {
+  --uzum-purple: #7000ff;
+  --uzum-light-purple: #f3ebff;
+  --uzum-gray: #f5f6fa;
+  --uzum-dark: #222;
+}
+
+/* Scrollbar (optional but clean like Uzum) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #c4c4c4;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}

@@ -1,0 +1,71 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f6fa;
+  font-family: "Inter", sans-serif;
+}
+
+.registerBox {
+  background: #fff;
+  padding: 40px 50px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.logo {
+  font-size: 32px;
+  font-weight: 700;
+  color: #7000ff;
+  margin-bottom: 10px;
+}
+
+.title {
+  font-size: 22px;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.inputGroup input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.inputGroup input:focus {
+  border-color: #7000ff;
+}
+
+.button {
+  width: 100%;
+}
+
+.footer {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #555;
+}
+
+.footer a {
+  color: #7000ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
