@@ -1,0 +1,124 @@
+.header {
+  width: 100%;
+  position: sticky;
+  top: 0;
+  background-color: #FFFFFF;
+  z-index: 100;
+}
+
+.header__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+
+.brand {
+  width: 215px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.logo {
+  width: 32px;
+  height: 32px;
+}
+
+.brand_name {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 20px;     
+  color: #7000ff;
+  text-transform: lowercase;
+  letter-spacing: 1px;  
+  display: flex;
+  align-items: center;
+}
+
+
+
+
+.catalog a {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  text-decoration: none;
+}
+
+.catalog a:hover {
+  color: #7000ff;
+}
+
+
+.search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin: 0 20px;
+  background: #f5f5f5;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #E2EAF1;
+}
+
+.search_icon {
+  height: 100%;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search_logo {
+  height: 15px;
+  width: 15px;
+}
+
+.search_input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+.profile a {
+  text-decoration: none;
+  color: #333;
+}
+
+.profile a:hover {
+  color: #7000ff;
+}
+
+
+@media (max-width: 1024px) {
+  .header__container {
+    flex-wrap: wrap;
+  }
+
+  .search {
+    margin: 10px 0;
+    width: 100%;
+  }
+
+  .profile {
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 5px;
+  }
+}
