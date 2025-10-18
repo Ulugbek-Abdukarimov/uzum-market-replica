@@ -1,25 +1,33 @@
+"use client";
 import styles from "./header.module.css";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Header() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("uzum-user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
   return (
     <header className={styles.header}>
       <div className={styles.header__container}>
         
-        
         <div className={styles.brand}>
-          <Link href="/" className={styles.logo} >
+          <Link href="/" className={styles.logo}>
             <img src="/icons/uzum-logo.png" alt="Логотип" className={styles.logo} />
           </Link>
           <span className={styles.brand_name}>uzum market</span>
         </div>
 
-        
         <div className={styles.catalog}>
           <Link href="#">Каталог</Link> 
         </div>
 
-        
         <div className={styles.search}>
           <input
             type="text"
@@ -31,9 +39,10 @@ export default function Header() {
           </span>
         </div>
 
-        
         <div className={styles.profile}>
-          <Link href="#">Профиль</Link> 
+          <Link href="#">
+            {user ? user.name : "Профиль"}
+          </Link>
           <Link href="#">Избранное</Link> 
           <Link href="#">Корзина</Link> 
         </div>
