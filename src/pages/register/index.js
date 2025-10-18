@@ -9,26 +9,18 @@ import { useState } from "react";
 
 export default function Page() {
   const [loading, setLoading] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
-
+  const { register, handleSubmit } = useForm();
   const router = useRouter();
 
   const onSubmit = async (data) => {
     setLoading(true);
 
-    
     if (data.password !== data.passwordVerification) {
       alert("Parollar mos kelmadi!");
       setLoading(false);
       return;
     }
 
-    
     const response = await registerUser({
       name: data.fullName,
       email: data.email,
@@ -49,36 +41,11 @@ export default function Page() {
     <AuthLayout>
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
         <div className={styles.inputGroup}>
-          <AuthInput
-            type="text"
-            id="fullName"
-            placeholder="To‘liq ism"
-            required
-            {...register("fullName")}
-          />
-          <AuthInput
-            type="email"
-            id="email"
-            placeholder="Email"
-            required
-            {...register("email")}
-          />
-          <AuthInput
-            type="password"
-            id="password"
-            placeholder="Parol"
-            required
-            {...register("password")}
-          />
-          <AuthInput
-            type="password"
-            id="passwordVerification"
-            placeholder="Parolni tasdiqlang"
-            required
-            {...register("passwordVerification")}
-          />
+          <AuthInput type="text" placeholder="To‘liq ism" required {...register("fullName")} />
+          <AuthInput type="email" placeholder="Email" required {...register("email")} />
+          <AuthInput type="password" placeholder="Parol" required {...register("password")} />
+          <AuthInput type="password" placeholder="Parolni tasdiqlang" required {...register("passwordVerification")} />
         </div>
-
         <div className={styles.button}>
           <AuthButton>{loading ? "Jarayon..." : "Ro‘yxatdan o‘tish"}</AuthButton>
         </div>

@@ -1,0 +1,16 @@
+.productSlider__wrapper {
+  padding: 40px 0;
+  background: #ffffff;
+}
+
+
+.productSlider__swiper {
+  width: 100%;
+  padding: 20px 0;
+}
+
+
+.productSlider__slide {
+  display: flex;
+  justify-content: center;
+}

@@ -9,7 +9,7 @@ html, body {
   height: 100%;
   font-family: "Inter", "Arial", sans-serif;
   background-color: #FFFFFF;
-  color: #222;
+  color: #000000;
 }
 
 a {
@@ -34,17 +34,24 @@ button {
 
 .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1342px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 16px 40px;
+  scroll-behavior: smooth;
 }
+
+
+
+
+
+
 
 
 :root {
   --uzum-purple: #7000ff;
   --uzum-light-purple: #f3ebff;
   --uzum-gray: #f5f6fa;
-  --uzum-dark: #222;
+  --uzum-dark: #000000;
 }
 
 

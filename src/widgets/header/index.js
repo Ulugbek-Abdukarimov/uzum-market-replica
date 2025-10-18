@@ -25,7 +25,7 @@ export default function Header() {
         </div>
 
         <div className={styles.catalog}>
-          <Link href="#">Каталог</Link> 
+          <Link href="/home">Каталог</Link> 
         </div>
 
         <div className={styles.search}>
@@ -41,10 +41,11 @@ export default function Header() {
 
         <div className={styles.profile}>
           <Link href="#">
+            <i class="fa-regular fa-user"> </i>
             {user ? user.name : "Профиль"}
           </Link>
-          <Link href="#">Избранное</Link> 
-          <Link href="#">Корзина</Link> 
+          <Link href="/favorites">Избранное</Link> 
+          <Link href="/cart">Корзина</Link> 
         </div>
 
       </div>
