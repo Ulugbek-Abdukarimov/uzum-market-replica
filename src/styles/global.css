@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+:root {
+  --swiper-pagination-bottom: 0; 
+}
+
 
 html, body {
   height: 100%;

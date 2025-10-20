@@ -5,14 +5,14 @@ import ProductCard from "@/shared/ui/product-card";
 
 
 
-export default function MainSlider({ goods, filterType }){
+export default function MainSlider({ goods, filterType, slideNumber }){
     
 
     return(
         <Swiper
           slidesPerView="auto"
           spaceBetween={40}
-          slidesPerView={5} 
+          slidesPerView={slideNumber} 
           centeredSlides={true}    
           centeredSlidesBounds={true}     
           slideToClickedSlide={true} 
