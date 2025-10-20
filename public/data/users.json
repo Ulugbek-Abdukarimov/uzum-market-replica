@@ -7,58 +7,19 @@
       "name": "Test User"
     },
     {
-      "id": "1760747778374",
-      "name": "d",
-      "email": "d@.com",
-      "password": "1"
+      "id": "1760986269121",
+      "name": "a",
+      "email": "a",
+      "password": "a",
+      "favorites": [
+        "22"
+      ]
     },
     {
-      "id": "1760747836115",
-      "name": "dfs",
-      "email": "d",
-      "password": "1"
-    },
-    {
-      "id": "1760806479117",
-      "name": "U",
-      "email": "U",
-      "password": "1"
-    },
-    {
-      "id": "1760806610534",
+      "id": "1760989610638",
       "name": "s",
       "email": "s",
       "password": "s"
-    },
-    {
-      "id": "1760807239431",
-      "name": "sds",
-      "email": "q",
-      "password": "q"
-    },
-    {
-      "id": "1760807369488",
-      "name": "a",
-      "email": "a",
-      "password": "a"
-    },
-    {
-      "id": "1760807741701",
-      "name": "g",
-      "email": "g",
-      "password": "g"
-    },
-    {
-      "id": "1760808041324",
-      "name": "sd",
-      "email": "sd",
-      "password": "sd"
-    },
-    {
-      "id": "1760826849638",
-      "name": "Islom",
-      "email": "Islom@gmail.com",
-      "password": "123456"
     }
   ]
 }

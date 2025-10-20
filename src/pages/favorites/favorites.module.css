@@ -1,0 +1,19 @@
+.title {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 30px 0 25px;
+  text-align: left;
+  color: #222;
+}
+
+.productsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+}
+
+.productsList > div {
+  flex: 0 1 calc(20% - 20px); 
+  box-sizing: border-box;
+}
