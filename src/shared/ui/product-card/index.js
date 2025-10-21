@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import styles from "./product-card.module.css";
+import Link from "next/link";
 
 export default function ProductCard({ good }) {
   const [liked, setLiked] = useState(false);
@@ -120,8 +121,10 @@ export default function ProductCard({ good }) {
 
   const isBlackFriday = good.isBlackFriday === true;
 
-  return (
-    <div className={styles.productSlider__card}>
+  return (<div className={styles.productSlider__card}>
+  {/* Only clickable part wrapped in Link */}
+  <Link href={`/product-details/${good.id}`} className={styles.linkWrapper}>
+    <div className={styles.linkContent}>
       <div className={styles.productSlider__image}>
         <img src={good.media[0]} alt={good.title} />
       </div>
@@ -149,20 +152,30 @@ export default function ProductCard({ good }) {
           </>
         )}
       </div>
-
-      <span
-        className={`${styles.shopping_cart} ${inCart ? styles.inCart : ""}`}
-        onClick={handleAddToCart}
-      >
-        <img src="./icons/shopping-cart.png" alt="#Shopping_Cart" />
-      </span>
-
-      <span
-        className={`${styles.liked} ${liked ? styles.active : ""}`}
-        onClick={toggleLike}
-      >
-        <i className="fa-regular fa-heart"></i>
-      </span>
     </div>
+  </Link>
+
+  {/* Buttons outside Link */}
+  <span
+    className={`${styles.shopping_cart} ${inCart ? styles.inCart : ""}`}
+    onClick={(e) => {
+      e.stopPropagation(); // prevent Link click
+      handleAddToCart();
+    }}
+  >
+    <img src="./icons/shopping-cart.png" alt="#Shopping_Cart" />
+  </span>
+
+  <span
+    className={`${styles.liked} ${liked ? styles.active : ""}`}
+    onClick={(e) => {
+      e.stopPropagation(); // prevent Link click
+      toggleLike();
+    }}
+  >
+    <i className="fa-regular fa-heart"></i>
+  </span>
+</div>
+
   );
 }

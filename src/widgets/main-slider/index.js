@@ -10,7 +10,6 @@ export default function MainSlider({ goods, filterType, slideNumber }){
 
     return(
         <Swiper
-          slidesPerView="auto"
           spaceBetween={40}
           slidesPerView={slideNumber} 
           centeredSlides={true}    

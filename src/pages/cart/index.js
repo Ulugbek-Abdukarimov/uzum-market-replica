@@ -1,39 +1,72 @@
 "use client";
-
-import { useGoods } from "@/shared/helpers/request.js";
+import styles from "./cart.module.css";
+import { useEffect, useState } from "react";
 import Header from "@/widgets/header";
+import ProductCard from "@/shared/ui/product-card";
 
 export default function CartPage() {
-  const { goods, loading } = useGoods();
+  const [likedGoods, setLikedGoods] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
-  if (loading) return <p>Loading...</p>;
+  useEffect(() => {
+    const stored = localStorage.getItem("uzum-user");
 
-  const cartGoods = goods.filter((good) => good.type === "TV");
+    if (!stored) {
+      setLoading(false);
+      return;
+    }
 
-  // Optional: calculate total price
-  const totalPrice = cartGoods.reduce((sum, item) => sum + (item.price || 0), 0);
+    const parsedUser = JSON.parse(stored);
+    setUser(parsedUser);
+
+    const fetchLikedGoods = async () => {
+      try {
+        const res = await fetch("http://localhost:3001/users");
+        if (!res.ok) throw new Error("Failed to fetch users");
+        const users = await res.json();
+
+        const userData = users.find((u) => u.id === parsedUser.id);
+
+        if (userData && userData.likes) {
+          setLikedGoods(userData.likes);
+        } else {
+          setLikedGoods([]);
+        }
+      } catch (err) {
+        console.error("Error fetching liked goods:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLikedGoods();
+  }, []);
+
+  if (loading) return <p>Загрузка...</p>;
+
+  if (!user) {
+    return (
+      <div className="container">
+        <Header />
+        <h1 className={styles.title}>Корзинка</h1>
+        <p>Пожалуйста, войдите в аккаунт, чтобы увидеть товары в корзинке.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="container">
       <Header />
-      <h1>Корзина</h1>
+      <h1 className={styles.title}>Корзинка</h1>
 
-      {cartGoods.length > 0 ? (
-        <>
-          <ul>
-            {cartGoods.map((item) => (
-              <li key={item.id} style={{ marginBottom: "20px" }}>
-                <img src={item.media[0]} alt={item.title} width={100} />
-                <p>{item.title}</p>
-                <p>{item.price ? item.price + " сум" : "Цена не указана"}</p>
-              </li>
-            ))}
-          </ul>
-          <h3>Итого: {totalPrice.toLocaleString()} сум</h3>
-        </>
-      ) : (
-        <p>Корзина пуста.</p>
-      )}
+      <div className={styles.productsList}>
+        {likedGoods.length > 0 ? (
+          likedGoods.map((good) => <ProductCard key={good.id} good={good} />)
+        ) : (
+          <p>Ваша корзинка пуста.</p>
+        )}
+      </div>
     </div>
   );
 }
