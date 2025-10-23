@@ -4,19 +4,44 @@
   gap: 15px;
 }
 
-.inputGroup input {
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.passwordWrapper {
+  position: relative;
   width: 100%;
-  padding: 12px;
+}
+
+.passwordWrapper input {
+  width: 100%;
+  padding: 12px 40px 12px 12px; /* room for eye icon */
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 15px;
   outline: none;
   transition: border-color 0.2s;
-  margin-bottom: 5px;
 }
 
-.inputGroup input:focus {
+.passwordWrapper input:focus {
   border-color: #7000ff;
+}
+
+.eyeIcon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #777;
+  transition: color 0.2s;
+}
+
+.eyeIcon:hover {
+  color: #333;
 }
 
 .button {

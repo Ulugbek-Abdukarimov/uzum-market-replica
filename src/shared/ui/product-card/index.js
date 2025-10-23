@@ -100,10 +100,19 @@ export default function ProductCard({ good }) {
         });
       }
 
-      const alreadyInCart = userData.cart.some((item) => item.id === good.id);
-      const updatedCart = alreadyInCart
-        ? userData.cart.filter((item) => item.id !== good.id)
-        : [...userData.cart, good];
+      // ✅ Fix: handle nested { product, count } structure
+      let updatedCart = [...userData.cart];
+      const itemIndex = updatedCart.findIndex(
+        (item) => item.product && item.product.id === good.id
+      );
+
+      if (itemIndex > -1) {
+        // Item already exists → increase count
+        updatedCart[itemIndex].count = (updatedCart[itemIndex].count || 0) + 1;
+      } else {
+        // New item → add correctly with { product, count }
+        updatedCart.push({ product: good, count: 1 });
+      }
 
       const updatedUser = { ...userData, cart: updatedCart };
 
@@ -113,7 +122,7 @@ export default function ProductCard({ good }) {
         body: JSON.stringify(updatedUser),
       });
 
-      setInCart(!alreadyInCart);
+      setInCart(true);
     } catch (error) {
       console.error("Error updating cart:", error.message);
     }
@@ -121,61 +130,59 @@ export default function ProductCard({ good }) {
 
   const isBlackFriday = good.isBlackFriday === true;
 
-  return (<div className={styles.productSlider__card}>
-  {/* Only clickable part wrapped in Link */}
-  <Link href={`/product-details/${good.id}`} className={styles.linkWrapper}>
-    <div className={styles.linkContent}>
-      <div className={styles.productSlider__image}>
-        <img src={good.media[0]} alt={good.title} />
-      </div>
+  return (
+    <div className={styles.productSlider__card}>
+      <Link href={`/product-details/${good.id}`} className={styles.linkWrapper}>
+        <div className={styles.linkContent}>
+          <div className={styles.productSlider__image}>
+            <img src={good.media[0]} alt={good.title} />
+          </div>
 
-      <p className={styles.productSlider__title}>{good.title}</p>
+          <p className={styles.productSlider__title}>{good.title}</p>
 
-      <div className={styles.productSlider__price}>
-        {isBlackFriday ? (
-          <>
-            <p className={styles.oldPrice}>
-              {(good.price + 100001).toLocaleString("ru-RU")} сум
-            </p>
-            <p className={styles.currentPrice}>
-              {good.price.toLocaleString("ru-RU")} сум
-            </p>
-          </>
-        ) : (
-          <>
-            <p className={styles.oldPrice}>
-              {(good.price + 100001).toLocaleString("ru-RU")} сум
-            </p>
-            <p className={styles.currentPrice}>
-              {good.price.toLocaleString("ru-RU")} сум
-            </p>
-          </>
-        )}
-      </div>
+          <div className={styles.productSlider__price}>
+            {isBlackFriday ? (
+              <>
+                <p className={styles.oldPrice}>
+                  {(good.price + 100001).toLocaleString("ru-RU")} сум
+                </p>
+                <p className={styles.currentPrice}>
+                  {good.price.toLocaleString("ru-RU")} сум
+                </p>
+              </>
+            ) : (
+              <>
+                <p className={styles.oldPrice}>
+                  {(good.price + 100001).toLocaleString("ru-RU")} сум
+                </p>
+                <p className={styles.currentPrice}>
+                  {good.price.toLocaleString("ru-RU")} сум
+                </p>
+              </>
+            )}
+          </div>
+        </div>
+      </Link>
+
+      <span
+        className={`${styles.shopping_cart} ${inCart ? styles.inCart : ""}`}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleAddToCart();
+        }}
+      >
+        <img src="./icons/shopping-cart.png" alt="#Shopping_Cart" />
+      </span>
+
+      <span
+        className={`${styles.liked} ${liked ? styles.active : ""}`}
+        onClick={(e) => {
+          e.stopPropagation();
+          toggleLike();
+        }}
+      >
+        <i className="fa-regular fa-heart"></i>
+      </span>
     </div>
-  </Link>
-
-  {/* Buttons outside Link */}
-  <span
-    className={`${styles.shopping_cart} ${inCart ? styles.inCart : ""}`}
-    onClick={(e) => {
-      e.stopPropagation(); // prevent Link click
-      handleAddToCart();
-    }}
-  >
-    <img src="./icons/shopping-cart.png" alt="#Shopping_Cart" />
-  </span>
-
-  <span
-    className={`${styles.liked} ${liked ? styles.active : ""}`}
-    onClick={(e) => {
-      e.stopPropagation(); // prevent Link click
-      toggleLike();
-    }}
-  >
-    <i className="fa-regular fa-heart"></i>
-  </span>
-</div>
-
   );
 }

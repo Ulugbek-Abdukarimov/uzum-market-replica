@@ -58,7 +58,7 @@ export default function FavoritesPage() {
   return (
     <div className="container">
       <Header />
-      <h1 className={styles.title}>Избранное</h1>
+       
 
       <div className={styles.productsList}>
         {likedGoods.length > 0 ? (

@@ -1,3 +1,5 @@
+// File: src/pages/register.js
+"use client";
 import styles from "./register.module.css";
 import AuthLayout from "@/shared/ui/auth-register-layout";
 import AuthInput from "@/shared/ui/auth-input";
@@ -12,8 +14,16 @@ export default function Page() {
   const { register, handleSubmit } = useForm();
   const router = useRouter();
 
+  const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
+
   const onSubmit = async (data) => {
     setLoading(true);
+
+    if (!validateEmail(data.email)) {
+      alert("Email noto‘g‘ri formatda!");
+      setLoading(false);
+      return;
+    }
 
     if (data.password !== data.passwordVerification) {
       alert("Parollar mos kelmadi!");
@@ -31,7 +41,7 @@ export default function Page() {
 
     if (response.user) {
       alert("Ro‘yxatdan o‘tish muvaffaqiyatli! Iltimos, tizimga kiring.");
-      router.push("/login"); 
+      router.push("/login");
     } else {
       alert(response.message);
     }
@@ -41,13 +51,41 @@ export default function Page() {
     <AuthLayout>
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
         <div className={styles.inputGroup}>
-          <AuthInput type="text" placeholder="To‘liq ism" required {...register("fullName")} />
-          <AuthInput type="email" placeholder="Email" required {...register("email")} />
-          <AuthInput type="password" placeholder="Parol" required {...register("password")} />
-          <AuthInput type="password" placeholder="Parolni tasdiqlang" required {...register("passwordVerification")} />
+          <AuthInput
+            type="text"
+            placeholder="To‘liq ism"
+            required
+            {...register("fullName")}
+          />
+
+          <AuthInput
+            type="email"
+            placeholder="Email"
+            required
+            {...register("email")}
+          />
+
+          {/* password input (eye toggle handled inside AuthInput) */}
+          <AuthInput
+            type="password"
+            placeholder="Parol"
+            required
+            {...register("password")}
+          />
+
+          {/* confirm password input */}
+          <AuthInput
+            type="password"
+            placeholder="Parolni tasdiqlang"
+            required
+            {...register("passwordVerification")}
+          />
         </div>
+
         <div className={styles.button}>
-          <AuthButton>{loading ? "Jarayon..." : "Ro‘yxatdan o‘tish"}</AuthButton>
+          <AuthButton>
+            {loading ? "Jarayon..." : "Ro‘yxatdan o‘tish"}
+          </AuthButton>
         </div>
       </form>
     </AuthLayout>

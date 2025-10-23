@@ -11,14 +11,13 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import ProductCard from "@/shared/ui/product-card";
-
+import Link from "next/link"; // ✅ added
 
 export default function Page() {
   const { goods, loading } = useGoods();
-  const [authChecked, setAuthChecked] = useState(false); 
+  const [authChecked, setAuthChecked] = useState(false);
   const router = useRouter();
   const [showAll, setShowAll] = useState(false);
-  
 
   useEffect(() => {
     const storedUser = localStorage.getItem("uzum-user");
@@ -29,8 +28,7 @@ export default function Page() {
     }
   }, [router]);
 
-
-  if (!authChecked ||loading ) return null;
+  if (!authChecked || loading) return null;
 
   return (
     <div id="home-page" className="container">
@@ -39,13 +37,14 @@ export default function Page() {
       <section>
         <div className={styles.top_item_box}>
           <div className={styles.customPrev}>
-            <i class="fa-solid fa-arrow-left"></i>
+            <i className="fa-solid fa-arrow-left"></i>
           </div>
           <div className={styles.customNext}>
-            <i class="fa-solid fa-arrow-right"></i>
+            <i className="fa-solid fa-arrow-right"></i>
           </div>
+
           <Swiper
-            modules={[Autoplay, Pagination, Navigation]} 
+            modules={[Autoplay, Pagination, Navigation]}
             slidesPerView={1}
             spaceBetween={0}
             loop={true}
@@ -61,79 +60,86 @@ export default function Page() {
             speed={2000}
           >
             {goods
-              .filter((good) => good.isBlackFriday === true )
+              .filter((good) => good.isBlackFriday === true)
               .map((good) => (
                 <SwiperSlide key={good.id}>
+                  {/* ✅ Added clickable Link around the slide content */}
+                  <Link
+                    href={`/product-details/${good.id}`}
+                    className={styles.slideLink}
+                  >
+                    <div className={styles.auto_slide_wrapper}>
+                      <div className={styles.auto_slide_content}>
+                        <h1>{good.title}</h1>
+                        <p>{good.price.toLocaleString("ru-RU")} сум</p>
+                        <p>{good.description}</p>
+                      </div>
 
-                  <div className={styles.auto_slide_wrapper} >
-          
-                    <div className={styles.auto_slide_content}>
-                      <h1>{good.title}</h1>
-                      <p>{good.price.toLocaleString('ru-RU')} сум</p>
-                      <p>{good.description}</p>
+                      <div className={styles.productSlider__image}>
+                        <img src={good.media[0]} alt={good.title} />
+                      </div>
                     </div>
-
-                    <div className={styles.productSlider__image}>
-                      <img src={good.media[0]} alt={good.title}/>
-                    </div>
-                    
-                  </div>
-
-
+                  </Link>
                 </SwiperSlide>
-            ))}
+              ))}
           </Swiper>
-        </div> 
+        </div>
 
         <div className={styles.popular_section}>
           <h1 className={styles.productSlider__wrapper_h1}>Популярное</h1>
 
-          <div className={`${styles.bottom_items} ${showAll ? styles.showAll : ""}`}>
+          <div
+            className={`${styles.bottom_items} ${
+              showAll ? styles.showAll : ""
+            }`}
+          >
             {goods
               .filter((good) => good.salePercentage > 0)
               .map((good) => (
                 <ProductCard key={good.id} good={good} />
               ))}
           </div>
-            
+
           <p className={styles.show_more}>
             <button onClick={() => setShowAll((prev) => !prev)}>
               {showAll ? "Скрыть" : "Показать еще"}
             </button>
           </p>
         </div>
-
       </section>
 
-      <section >
+      <section>
         <div className={styles.productSlider__wrapper}>
-          <h1 className={styles.productSlider__wrapper_h1}>Кухонные товары</h1>
+          <h1 className={styles.productSlider__wrapper_h1}>
+            Кухонные товары
+          </h1>
           <MainSlider goods={goods} filterType="kitchen" slideNumber={5} />
-        </div> 
+        </div>
 
         <div className={styles.productSlider__wrapper}>
-          <h1 className={styles.productSlider__wrapper_h1}>Системные блоки / ПК</h1>
+          <h1 className={styles.productSlider__wrapper_h1}>
+            Системные блоки / ПК
+          </h1>
           <MainSlider goods={goods} filterType="PC" slideNumber={5} />
-        </div> 
+        </div>
 
         <div className={styles.productSlider__wrapper}>
-          <h1 className={styles.productSlider__wrapper_h1}>Компьютерные кресла</h1>
-          <MainSlider goods={goods} filterType="furniture" slideNumber={5}/>
-        </div> 
+          <h1 className={styles.productSlider__wrapper_h1}>
+            Компьютерные кресла
+          </h1>
+          <MainSlider goods={goods} filterType="furniture" slideNumber={5} />
+        </div>
 
         <div className={styles.productSlider__wrapper}>
           <h1 className={styles.productSlider__wrapper_h1}>Аудиотехника</h1>
           <MainSlider goods={goods} filterType="audio" slideNumber={5} />
-        </div> 
+        </div>
 
         <div className={styles.productSlider__wrapper}>
           <h1 className={styles.productSlider__wrapper_h1}>Телевизоры</h1>
           <MainSlider goods={goods} filterType="TV" slideNumber={5} />
-        </div> 
+        </div>
       </section>
-
     </div>
   );
 }
-
-        

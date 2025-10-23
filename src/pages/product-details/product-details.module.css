@@ -1,181 +1,181 @@
 .product_box {
-    width: 100%;
-    margin-bottom: 100px;
-
-
-    font-family: 'Gilroy', sans-serif;
-    color: #000;
+  width: 100%;
+  margin-bottom: 100px;
+  font-family: 'Gilroy', sans-serif;
+  color: #000;
 }
 
 /* ==================== */
 
 .product_details {
-    width: 100%;
-    height: 506px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  width: 100%;
+  min-height: 506px; /* was fixed height */
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* allows text to grow naturally */
+  flex-wrap: wrap;
+  gap: 30px;
 }
 
 .product_details_img {
-    width: 470px;
-    height: 506px;
+  width: 470px;
+  height: auto;
 }
 
 .product_details_img img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 .product_details_info {
-    width: 818px;
-    height: 506px;
-    padding: 40px 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
+  flex: 1;
+  min-width: 300px;
+  padding: 40px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 20px;
 }
 
 .product_title {
-    font-weight: 600;
-    font-size: 32px;
+  font-weight: 600;
+  font-size: 32px;
+  word-wrap: break-word;
 }
 
 .product_price {
-    width: 271px;
-    height: 34px;
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .product_price span:nth-child(1) {
-    width: 50%;
-    height: 34px;
-    font-weight: 600;
-    font-size: 28px;
-    color: inherit; 
-    align-items: center;
+  font-weight: 600;
+  font-size: 28px;
+  color: inherit;
 }
 
 .product_price span:nth-child(2) {
-    width: 50%;
-    height: 25px;
-    color: #ACACAC;
-    font-weight: 500;
-    font-size: 21px;
-    text-decoration: line-through;
+  color: #ACACAC;
+  font-weight: 500;
+  font-size: 21px;
+  text-decoration: line-through;
 }
 
 .product_counter {
-    width: 89px;
-    height: 30px;
-    border-radius: 3px;
-    border: 1px solid #ACACAC;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100px;
+  height: 35px;
+  border: 1px solid #ACACAC;
+  border-radius: 3px;
+  font-size: 18px;
+  user-select: none;
+  margin-top: 5px;
+}
+
+.product_counter span {
+  cursor: pointer;
+  font-weight: 600;
 }
 
 .hr {
-    width: 818px;
-    border: 1px solid #ACACAC;
+  width: 100%;
+  border: 1px solid #ACACAC;
 }
 
 .product_info {
-    max-width: 80%;
-    height: 133px;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 19px;
-    color: inherit; 
+  width: 100%;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: inherit;
+  word-wrap: break-word;
 }
 
 .product_buttons {
-    width: 359px;
-    height: 32px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
 }
 
-.product_buttons button:nth-child(1),
-.product_buttons button:nth-child(2) {
-    width: 176px;
-    height: 100%;
-    border-radius: 4px;
-    border: 1px solid #7000FF;
-    background-color: #fff;
-    color: #7000FF;
-    cursor: pointer;
-    transition: all 0.3s ease;
+.product_buttons button {
+  flex: 1;
+  height: 40px;
+  border-radius: 4px;
+  border: 1px solid #7000FF;
+  background-color: #fff;
+  color: #7000FF;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.3s ease;
 }
 
-.product_buttons button:nth-child(1):hover,
-.product_buttons button:nth-child(2):hover {
-    background-color: #5a00cc;
-    border-color: #5a00cc;
-    color: #fff;
+/* ✅ Hover for normal (inactive) buttons */
+.product_buttons button:hover:not(.inCart):not(.liked) {
+  background-color: #5a00cc;
+  border-color: #5a00cc;
+  color: #fff;
 }
 
+/* ✅ When button is active (in cart or liked) */
+.product_buttons button.inCart,
+.product_buttons button.liked {
+  background-color: #7000FF !important;
+  color: #fff !important;
+  border: 1px solid #7000FF !important;
+}
 
+/* ✅ Hover for active buttons */
+.product_buttons button.inCart:hover,
+.product_buttons button.liked:hover {
+  background-color: #5a00cc !important;
+  border-color: #5a00cc !important;
+}
 
-
-
-
-
-
-
+/* ✅ Click animation */
+.product_buttons button:active {
+  transform: scale(0.97);
+}
 
 /* ================================================== */
 
 .product_describtion {
-    width: 100%;
-    height: 250px;
-    padding: 50px 250px;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 50px 250px;
+  box-sizing: border-box;
 }
 
-.product_describtion>div h2 {
-    width: 100%;
-    font-family: "Gilroy", sans-serif;
-    font-weight: 500;
-    font-size: 21px;
-    line-height: 100%;
-    color: #000;
-    margin-bottom: 25px;
+.product_describtion > div h2 {
+  font-weight: 500;
+  font-size: 21px;
+  color: #000;
+  margin-bottom: 25px;
 }
 
-.product_describtion>div p {
-    width: 100%;
-    font-family: "Gilroy", sans-serif;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 22px;
-    color: #000;
+.product_describtion > div p {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #000;
+  word-wrap: break-word;
 }
-
-
-
-
 
 /* ============================= */
 
-
 .productSlider__wrapper {
-    margin-bottom: 150px;
+  margin-bottom: 150px;
 }
 
 .productSlider__wrapper_h1 {
-    font-family: 'Gilroy', sans-serif;
-    font-weight: 600;
-    font-style: normal;
-    font-size: 32px;
-    line-height: 1;
-    letter-spacing: 0;
-    color: #000;
-    margin-bottom: 60px;
-    vertical-align: middle;
+  font-weight: 600;
+  font-size: 32px;
+  color: #000;
+  margin-bottom: 60px;
 }

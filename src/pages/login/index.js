@@ -1,3 +1,4 @@
+"use client";
 import styles from "./login.module.css";
 import AuthLayout from "@/shared/ui/auth-layout";
 import AuthInput from "@/shared/ui/auth-input";
@@ -34,10 +35,20 @@ export default function Page() {
   return (
     <AuthLayout>
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-        <div className={styles.inputGroup}>
-          <AuthInput type="email" placeholder="Email" required {...register("email")} />
-          <AuthInput type="password" placeholder="Parol" required {...register("password")} />
-        </div>
+        <AuthInput
+          type="email"
+          placeholder="Email"
+          required
+          {...register("email")}
+        />
+
+        <AuthInput
+          type="password"
+          placeholder="Parol"
+          required
+          {...register("password")}
+        />
+
         <div className={styles.button}>
           <AuthButton>{loading ? "Jarayon..." : "Kirish"}</AuthButton>
         </div>

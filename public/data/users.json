@@ -7,25 +7,10 @@
       "name": "Test User"
     },
     {
-      "id": "1760986269121",
-      "name": "a",
-      "email": "a",
-      "password": "a",
-      "favorites": [
-        "22"
-      ]
-    },
-    {
-      "id": "1760989610638",
-      "name": "s",
-      "email": "s",
-      "password": "s"
-    },
-    {
-      "id": "1761065925930",
-      "name": "w",
-      "email": "w",
-      "password": "w"
+      "id": "1761187314755",
+      "name": "Ulugbek",
+      "email": "abdukarimovulugbek04@gmail.com",
+      "password": "123"
     }
   ]
 }

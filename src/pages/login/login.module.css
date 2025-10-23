@@ -1,22 +1,54 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
 }
 
-.inputGroup input {
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.passwordWrapper {
+  position: relative;
   width: 100%;
-  padding: 12px;
+}
+
+.passwordWrapper input {
+  width: 100%;
+  padding: 12px 40px 12px 12px;
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 15px;
   outline: none;
   transition: border-color 0.2s;
-  margin-bottom: 5px;
 }
 
-.inputGroup input:focus {
+.passwordWrapper input:focus {
   border-color: #7000ff;
+}
+
+.eyeIcon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #888;
+  background: none;       /* remove any default gray background */
+  border: none;           /* ensure no border appears */
+  outline: none;
+  padding: 0;             /* make icon flush with the input */
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eyeIcon:hover {
+  color: #333;
 }
 
 .button {
