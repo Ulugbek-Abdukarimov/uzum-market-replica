@@ -10,31 +10,31 @@ export default function FavoritesPage() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const stored = localStorage.getItem("uzum-user");
+    const storedUser = localStorage.getItem("uzum-user");
 
-    if (!stored) {
+    if (!storedUser) {
       setLoading(false);
       return;
     }
 
-    const parsedUser = JSON.parse(stored);
+    const parsedUser = JSON.parse(storedUser);
     setUser(parsedUser);
 
     const fetchLikedGoods = async () => {
       try {
         const res = await fetch("http://localhost:3001/users");
-        if (!res.ok) throw new Error("Failed to fetch users");
-        const users = await res.json();
+        if (!res.ok) throw new Error("Ошибка при получении данных пользователей");
 
+        const users = await res.json();
         const userData = users.find((u) => u.id === parsedUser.id);
 
-        if (userData && userData.likes) {
+        if (userData && Array.isArray(userData.likes)) {
           setLikedGoods(userData.likes);
         } else {
           setLikedGoods([]);
         }
       } catch (err) {
-        console.error("Error fetching liked goods:", err);
+        console.error("Ошибка загрузки избранных товаров:", err);
       } finally {
         setLoading(false);
       }
@@ -43,14 +43,23 @@ export default function FavoritesPage() {
     fetchLikedGoods();
   }, []);
 
-  if (loading) return <p>Загрузка...</p>;
+  if (loading) {
+    return (
+      <div className="container">
+        <Header />
+        <p className={styles.loading}>Загрузка...</p>
+      </div>
+    );
+  }
 
   if (!user) {
     return (
       <div className="container">
         <Header />
         <h1 className={styles.title}>Избранное</h1>
-        <p>Пожалуйста, войдите в аккаунт, чтобы увидеть избранные товары.</p>
+        <p className={styles.message}>
+          Пожалуйста, войдите в аккаунт, чтобы увидеть избранные товары.
+        </p>
       </div>
     );
   }
@@ -58,13 +67,15 @@ export default function FavoritesPage() {
   return (
     <div className="container">
       <Header />
-       
+      <h1 className={styles.title}>Избранное</h1>
 
       <div className={styles.productsList}>
         {likedGoods.length > 0 ? (
-          likedGoods.map((good) => <ProductCard key={good.id} good={good} />)
+          likedGoods.map((good) => (
+            <ProductCard key={good.id} good={good} />
+          ))
         ) : (
-          <p>У вас пока нет избранных товаров.</p>
+          <p className={styles.message}>У вас пока нет избранных товаров.</p>
         )}
       </div>
     </div>

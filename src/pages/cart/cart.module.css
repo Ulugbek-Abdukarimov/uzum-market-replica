@@ -2,6 +2,9 @@
   font-size: 26px;
   font-weight: 600;
   margin: 30px 0;
+  color: #222;
+  font-family: "Gilroy", sans-serif;
+  text-align: left;
 }
 
 .cartWrapper {
@@ -12,14 +15,15 @@
   flex-wrap: wrap;
 }
 
-/* LEFT SIDE - Product list */
+
 .productsList {
   flex: 1;
-  min-width: 600px;
+  min-width: 580px;
   background: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 10px;
-  padding: 20px 30px;
+  padding: 25px 30px;
+  box-sizing: border-box;
 }
 
 .cartItem {
@@ -63,7 +67,6 @@
   gap: 15px;
 }
 
-/* count buttons */
 .countControls {
   display: flex;
   align-items: center;
@@ -75,7 +78,7 @@
   background: #fff;
 }
 
-.countControls button {
+.countBtn {
   width: 30px;
   height: 35px;
   border: none;
@@ -87,7 +90,7 @@
   transition: all 0.2s ease;
 }
 
-.countControls button:hover {
+.countBtn:hover {
   background-color: #f4f1ff;
 }
 
@@ -96,7 +99,6 @@
   font-weight: 500;
 }
 
-/* delete button */
 .deleteBtn {
   background: #f3edff;
   color: #7000ff;
@@ -113,22 +115,35 @@
   color: #fff;
 }
 
-/* RIGHT SIDE - Summary box */
+.emptyCart {
+  text-align: center;
+  font-size: 16px;
+  color: #555;
+  padding: 50px 0;
+}
+
+
 .summaryBox {
   min-width: 280px;
+  max-width: 320px;
   background: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 10px;
-  padding: 20px 25px;
+  padding: 25px 25px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  box-sizing: border-box;
+  height: fit-content;
+  position: sticky;
+  top: 20px;
 }
 
 .totalPrice {
   font-size: 26px;
   font-weight: 700;
   margin-bottom: 10px;
+  color: #000;
 }
 
 .checkoutBtn {
@@ -138,7 +153,7 @@
   color: #fff;
   border: none;
   border-radius: 8px;
-  padding: 10px 0;
+  padding: 12px 0;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
@@ -147,4 +162,133 @@
 
 .checkoutBtn:hover {
   background: #5a00cc;
+}
+
+
+.loading,
+.message {
+  font-size: 18px;
+  color: #555;
+  text-align: center;
+  margin-top: 50px;
+}
+
+@media (max-width: 1200px) {
+  .cartWrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .productsList {
+    min-width: 100%;
+  }
+
+  .summaryBox {
+    width: 100%;
+    max-width: 100%;
+    position: static;
+  }
+}
+
+@media (max-width: 992px) {
+  .title {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .cartItem {
+    flex-direction: row;
+    gap: 15px;
+  }
+
+  .cartItem img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .countControls {
+    width: 80px;
+    height: 32px;
+  }
+
+  .countBtn {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cartItem {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .cartItem img {
+    width: 160px;
+    height: 160px;
+  }
+
+  .controlsRow {
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .productsList {
+    padding: 20px;
+  }
+
+  .summaryBox {
+    padding: 20px;
+  }
+
+  .totalPrice {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 20px;
+  }
+
+  .cartItem img {
+    width: 140px;
+    height: 140px;
+  }
+
+  .cartInfo {
+    text-align: center;
+  }
+
+  .itemTitle {
+    font-size: 15px;
+  }
+
+  .itemPrice {
+    font-size: 14px;
+  }
+
+  .countControls {
+    width: 75px;
+    height: 30px;
+  }
+
+  .countBtn {
+    font-size: 15px;
+  }
+
+  .deleteBtn {
+    font-size: 13px;
+    padding: 5px 10px;
+  }
+
+  .summaryBox {
+    border-radius: 8px;
+    padding: 15px;
+  }
+
+  .checkoutBtn {
+    font-size: 15px;
+    padding: 10px 0;
+  }
 }

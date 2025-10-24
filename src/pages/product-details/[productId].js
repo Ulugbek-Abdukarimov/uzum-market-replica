@@ -12,139 +12,146 @@ export default function ProductDetailsPage() {
   const { goods, loading } = useGoods();
 
   const [user, setUser] = useState(null);
-  const [count, setCount] = useState(1);
-  const [inCart, setInCart] = useState(false);
   const [liked, setLiked] = useState(false);
+  const [inCart, setInCart] = useState(false);
+  const [count, setCount] = useState(1);
+  const [refresh, setRefresh] = useState(false); 
 
-  // Load user from localStorage
+  const product = goods.find((item) => String(item.id) === String(productId));
+
   useEffect(() => {
     const stored = localStorage.getItem("uzum-user");
     if (stored) setUser(JSON.parse(stored));
   }, []);
 
-  const product = goods.find((item) => String(item.id) === String(productId));
 
-  // Load user data from DB and check product state
   useEffect(() => {
     if (!user || !product) return;
 
-    const loadUser = async () => {
+    const fetchUser = async () => {
       try {
-        const res = await fetch("http://localhost:3001/users");
-        const users = await res.json();
-        const current = users.find((u) => u.id === user.id);
-        if (!current) return;
+        const res = await fetch(`http://localhost:3001/users/${user.id}`);
+        const data = await res.json();
 
-        const liked = current.likes?.some((p) => p.id === product.id);
-        const cartItem = current.cart?.find((c) => c.product.id === product.id);
+        const liked = data.likes?.some((p) => p.id === product.id);
+        const cartItem = data.cart?.find((c) => c.product.id === product.id);
 
-        setLiked(liked);
+        setLiked(!!liked);
         setInCart(!!cartItem);
-        if (cartItem) setCount(cartItem.count);
+        setCount(cartItem ? cartItem.count : 1);
       } catch (err) {
-        console.error("Error loading user data:", err);
+        console.error("Error loading product states:", err);
       }
     };
 
-    loadUser();
-  }, [user, product]);
+    fetchUser();
+  }, [user, product, refresh]);
 
   const handleLike = async () => {
     if (!user) return alert("Пожалуйста, войдите в аккаунт.");
 
-    const res = await fetch("http://localhost:3001/users");
-    const users = await res.json();
-    const current = users.find((u) => u.id === user.id);
+    try {
+      const res = await fetch(`http://localhost:3001/users/${user.id}`);
+      const data = await res.json();
 
-    const alreadyLiked = current.likes?.some((p) => p.id === product.id);
-    const updatedLikes = alreadyLiked
-      ? current.likes.filter((p) => p.id !== product.id)
-      : [...(current.likes || []), product];
+      const alreadyLiked = data.likes?.some((p) => p.id === product.id);
+      const updatedLikes = alreadyLiked
+        ? data.likes.filter((p) => p.id !== product.id)
+        : [...(data.likes || []), product];
 
-    const updatedUser = { ...current, likes: updatedLikes };
-    await fetch(`http://localhost:3001/users/${user.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedUser),
-    });
+      await fetch(`http://localhost:3001/users/${user.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, likes: updatedLikes }),
+      });
 
-    setLiked(!alreadyLiked);
+      setLiked(!alreadyLiked);
+      setRefresh(!refresh);
+    } catch (err) {
+      console.error("Error updating like:", err);
+    }
   };
 
   const handleCart = async () => {
     if (!user) return alert("Пожалуйста, войдите в аккаунт.");
 
-    const res = await fetch("http://localhost:3001/users");
-    const users = await res.json();
-    const current = users.find((u) => u.id === user.id);
+    try {
+      const res = await fetch(`http://localhost:3001/users/${user.id}`);
+      const data = await res.json();
 
-    let updatedCart;
-    const existing = current.cart.find((c) => c.product.id === product.id);
+      const existing = data.cart?.find((c) => c.product.id === product.id);
+      let updatedCart;
 
-    if (existing) {
-      updatedCart = current.cart.map((c) =>
-        c.product.id === product.id ? { ...c, count: c.count + 1 } : c
-      );
-    } else {
-      updatedCart = [...current.cart, { product, count: 1 }];
+      if (existing) {
+        updatedCart = data.cart.map((c) =>
+          c.product.id === product.id ? { ...c, count: c.count + 1 } : c
+        );
+      } else {
+        updatedCart = [...(data.cart || []), { product, count: 1 }];
+      }
+
+      await fetch(`http://localhost:3001/users/${user.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, cart: updatedCart }),
+      });
+
+      setInCart(true);
+      setCount(existing ? existing.count + 1 : 1);
+      setRefresh(!refresh);
+    } catch (err) {
+      console.error("Error updating cart:", err);
     }
-
-    const updatedUser = { ...current, cart: updatedCart };
-    await fetch(`http://localhost:3001/users/${user.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedUser),
-    });
-
-    setInCart(true);
-    setCount(1);
-  };
-
-  const handleRemoveFromCart = async () => {
-    if (!user || !product) return;
-
-    const res = await fetch("http://localhost:3001/users");
-    const users = await res.json();
-    const current = users.find((u) => u.id === user.id);
-
-    const updatedCart = current.cart.filter((c) => c.product.id !== product.id);
-
-    const updatedUser = { ...current, cart: updatedCart };
-    await fetch(`http://localhost:3001/users/${user.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedUser),
-    });
   };
 
   const handleCountChange = async (delta) => {
+    if (!user || !inCart) return;
+
     const newCount = count + delta;
-    if (newCount < 1) {
-      await handleRemoveFromCart();
-      setInCart(false);
-      setCount(1);
-      return;
+
+    try {
+      const res = await fetch(`http://localhost:3001/users/${user.id}`);
+      const data = await res.json();
+
+      if (newCount < 1) {
+        const updatedCart = data.cart.filter(
+          (c) => c.product.id !== product.id
+        );
+
+        await fetch(`http://localhost:3001/users/${user.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...data, cart: updatedCart }),
+        });
+
+        setInCart(false);
+        setCount(1);
+        return;
+      }
+
+      const updatedCart = data.cart.map((c) =>
+        c.product.id === product.id ? { ...c, count: newCount } : c
+      );
+
+      await fetch(`http://localhost:3001/users/${user.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, cart: updatedCart }),
+      });
+
+      setCount(newCount);
+    } catch (err) {
+      console.error("Error updating cart count:", err);
     }
-
-    setCount(newCount);
-
-    const res = await fetch("http://localhost:3001/users");
-    const users = await res.json();
-    const current = users.find((u) => u.id === user.id);
-
-    const updatedCart = current.cart.map((c) =>
-      c.product.id === product.id ? { ...c, count: newCount } : c
-    );
-
-    const updatedUser = { ...current, cart: updatedCart };
-    await fetch(`http://localhost:3001/users/${user.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedUser),
-    });
   };
 
-  if (loading || !product) return <p>Loading...</p>;
+  const [selectedImage, setSelectedImage] = useState("");
+
+  useEffect(() => {
+    if (product) setSelectedImage(product.media?.[0]);
+  }, [product]);
+
+  if (loading || !product) return <p>Загрузка...</p>;
 
   return (
     <div className="container">
@@ -153,8 +160,24 @@ export default function ProductDetailsPage() {
       <section className={styles.product_box}>
         <div className={styles.product_details}>
           <div className={styles.product_details_img}>
-            <img src={product.media[0]} alt={product.title} />
+            <div className={styles.thumbnails}>
+              {product.media.map((img, index) => (
+                <img
+                  key={index}
+                  src={img}
+                  alt={`${product.title} ${index + 1}`}
+                  className={`${styles.thumbnail} ${selectedImage === img ? styles.active : ""
+                    }`}
+                  onClick={() => setSelectedImage(img)}
+                />
+              ))}
+            </div>
+
+            <div className={styles.mainImageContainer}>
+              <img src={selectedImage} alt={product.title} className={styles.mainImage} />
+            </div>
           </div>
+
 
           <div className={styles.product_details_info}>
             <h1 className={styles.product_title}>{product.title}</h1>
@@ -166,7 +189,7 @@ export default function ProductDetailsPage() {
               </span>
             </p>
 
-            {/* Counter under price */}
+            {/* Counter (only if in cart) */}
             {inCart && (
               <div className={styles.product_counter}>
                 <span onClick={() => handleCountChange(-1)}>-</span>
@@ -206,9 +229,7 @@ export default function ProductDetailsPage() {
 
       <section>
         <div className={styles.productSlider__wrapper}>
-          <h1 className={styles.productSlider__wrapper_h1}>
-            Кухонные товары
-          </h1>
+          <h1 className={styles.productSlider__wrapper_h1}>Кухонные товары</h1>
           <MainSlider goods={goods} filterType={product.type} slideNumber={5} />
         </div>
       </section>

@@ -65,7 +65,6 @@ export default function Page() {
             {...register("email")}
           />
 
-          {/* password input (eye toggle handled inside AuthInput) */}
           <AuthInput
             type="password"
             placeholder="Parol"
@@ -73,7 +72,6 @@ export default function Page() {
             {...register("password")}
           />
 
-          {/* confirm password input */}
           <AuthInput
             type="password"
             placeholder="Parolni tasdiqlang"

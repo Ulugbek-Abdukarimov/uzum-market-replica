@@ -1,41 +1,126 @@
-# Product Requirements Document (PRD)
+# Product Requirements Document
 
-## Проект: Реплика Uzum Market
+## Uzum Market Replica
 
-Версия: 1.1  
-Автор: [Твоё имя / Команда проекта]  
-Дата: [Укажи дату]
+### 1. Product Overview
 
----
+- **Product Name**: Uzum Market Replica  
+- **Version**: 1.1  
+- **Product Type**: Front-end Web Application  
 
-## 1. Цель проекта
-
-Цель проекта — разработать учебную веб-реплику сайта Uzum Market, демонстрирующую понимание принципов построения электронной коммерции, пользовательского интерфейса и работы с API.
-
-Проект выполняется в учебных целях в течение 3 недель, с фокусом на практическом освоении frontend-разработки и работе с фейковым API.
+**Uzum Market Replica** – This is an educational web project that replicates the main features and interface of *Uzum Market*.  
+The goal of the project is to demonstrate understanding of frontend development, responsive UI/UX design, and working with a fake API.
 
 ---
 
-## 2. Описание продукта
+### 2. Target Users
 
-Реплика Uzum Market представляет собой онлайн-платформу, где пользователи могут:
-- просматривать каталог товаров;
-- регистрироваться и входить в аккаунт;
-- добавлять товары в избранное;
-- добавлять товары в корзину;
-- просматривать изображения товаров.
-
-Данные берутся из фейкового API, созданного на основе JSON-файла с каталогом товаров.
+- **Students and Instructors** – For educational practice and project evaluation.  
+- **Beginner Developers** – To demonstrate portfolio and technical skills.  
+- **Frontend Learners** – To study adaptive layout and API interaction.
 
 ---
 
-## 3. Целевая аудитория
+### 3. Core Features
 
-- Студенты и преподаватели учебного центра (в рамках практического задания);  
-- Демонстрация навыков frontend-разработки и взаимодействия с API;  
-- Потенциальная база для будущих e-commerce проектов.
+#### 3.1 User Authentication and Authorization
+
+- **User Registration** – Create a new user account.  
+- **User Login** – Authenticate to access personalized features.  
+- *(Optional)* Password reset and session persistence.
+
+#### 3.2 Product Interaction
+
+- **Main Page** – Displays categories, promotions, and all products.  
+- **Product Page** – Shows detailed information about a selected product (image, description, price).  
+- **Favorites** – Add and remove products from favorites.  
+- **Cart** – Add, remove, and view products in the shopping cart.
 
 ---
+
+### 4. Technical Specification
+
+#### 4.1 Pages
+
+- `/login` – Login Page  
+- `/register` – Registration Page  
+- `/home` – Main Page (includes categories, promotions, and all products)  
+- `/product/:id` – Individual Product Page  
+- `/favorites` – User’s Favorite Products  
+- `/cart` – Shopping Cart Page  
+
+#### 4.2 Layouts
+
+- **Mobile** – starts from iPhone SE (360px)  
+- **Tablet** – starts from iPad Mini  
+- **Desktop** – starts from Full HD (1920×1080)
+
+#### 4.3 Technology Stack
+
+- **Frontend:** HTML, CSS, JavaScript  
+- **Backend (Fake API):** JSON file served locally via Node.js  
+- **Data Handling:** Fetch API for retrieving and displaying product data  
+
+---
+
+### 5. Security Features
+
+- Client-side validation of login and registration data  
+- Local storage for user session, favorites, and cart  
+- No real or sensitive user data used (for educational purposes)
+
+---
+
+### 6. Success Criteria
+
+- Clear and modular folder structure (FSD architecture)  
+- All main features work properly (catalog, cart, favorites, login/register)  
+- Responsive and user-friendly interface for all devices  
+- Pages load within 3 seconds  
+- Correct data display from the fake JSON API  
+- No critical bugs during demonstration
+
+---
+
+### 7. Future Improvements
+
+- Add checkout (order placement) feature  
+- Connect real backend and database  
+- Add reviews and product ratings  
+- Improve filtering and search functionality  
+- Add pagination and sorting features  
+
+---
+
+### 8. Development Timeline
+
+| Phase | Description | Duration |
+|-------|--------------|-----------|
+| 1 | Interface design and layout creation | 2–3 days |
+| 2 | Project structure setup and Fake API creation | 2 days |
+| 3 | Page implementation and navigation setup | 3 days |
+| 4 | Functionality implementation (cart, favorites, login/register) | 3–4 days |
+| 5 | Testing and debugging | 2 days |
+
+**Total Duration:** ~3 weeks
+
+---
+
+### 9. Risks and Limitations
+
+- No real backend or database connection  
+- Simplified authentication logic  
+- Limited JSON data  
+- Checkout system not implemented  
+
+---
+
+### 10. References
+
+- [Uzum Market Official Website](https://uzum.uz)  
+- Node.js Documentation  
+- Educational Materials from Learning Center
+
 
 ## 4. Основные функции (MVP)
 

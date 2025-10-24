@@ -9,23 +9,27 @@ export default function CartPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const stored = localStorage.getItem("uzum-user");
-    if (!stored) {
+    const storedUser = localStorage.getItem("uzum-user");
+
+    if (!storedUser) {
       setLoading(false);
       return;
     }
 
-    const parsedUser = JSON.parse(stored);
+    const parsedUser = JSON.parse(storedUser);
     setUser(parsedUser);
 
     const fetchCart = async () => {
       try {
         const res = await fetch("http://localhost:3001/users");
+        if (!res.ok) throw new Error("Ошибка при загрузке данных пользователей");
+
         const users = await res.json();
-        const current = users.find((u) => u.id === parsedUser.id);
-        setCartItems(current?.cart || []);
+        const currentUser = users.find((u) => u.id === parsedUser.id);
+
+        setCartItems(currentUser?.cart || []);
       } catch (err) {
-        console.error("Error loading cart:", err);
+        console.error("Ошибка загрузки корзины:", err);
       } finally {
         setLoading(false);
       }
@@ -40,14 +44,18 @@ export default function CartPage() {
         ? { ...item, count: Math.max(1, (item.count || 1) + delta) }
         : item
     );
+
     setCartItems(updatedCart);
 
-    const updatedUser = { ...user, cart: updatedCart };
-    await fetch(`http://localhost:3001/users/${user.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedUser),
-    });
+    try {
+      await fetch(`http://localhost:3001/users/${user.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...user, cart: updatedCart }),
+      });
+    } catch (err) {
+      console.error("Ошибка при обновлении количества:", err);
+    }
   };
 
   const deleteItem = async (productId) => {
@@ -56,22 +64,45 @@ export default function CartPage() {
     );
     setCartItems(updatedCart);
 
-    const updatedUser = { ...user, cart: updatedCart };
-    await fetch(`http://localhost:3001/users/${user.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedUser),
-    });
+    try {
+      await fetch(`http://localhost:3001/users/${user.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...user, cart: updatedCart }),
+      });
+    } catch (err) {
+      console.error("Ошибка при удалении товара:", err);
+    }
   };
 
   const totalSum = cartItems.reduce(
     (acc, item) => acc + (item.product.price || 0) * (item.count || 1),
     0
   );
-  const totalCount = cartItems.reduce((acc, item) => acc + (item.count || 1), 0);
-  const totalDiscount = Math.round(totalSum * 0.13); // example 13% discount
+  const totalCount = cartItems.reduce(
+    (acc, item) => acc + (item.count || 1),
+    0
+  );
+  const totalDiscount = Math.round(totalSum * 0.13); 
 
-  if (loading) return <p>Загрузка...</p>;
+  if (loading)
+    return (
+      <div className="container">
+        <Header />
+        <p className={styles.loading}>Загрузка...</p>
+      </div>
+    );
+
+  if (!user)
+    return (
+      <div className="container">
+        <Header />
+        <h1 className={styles.title}>Корзина товаров</h1>
+        <p className={styles.message}>
+          Пожалуйста, войдите в аккаунт, чтобы просмотреть корзину.
+        </p>
+      </div>
+    );
 
   return (
     <div className="container">
@@ -79,27 +110,39 @@ export default function CartPage() {
       <h1 className={styles.title}>Корзина товаров</h1>
 
       <div className={styles.cartWrapper}>
-        {/* LEFT – product list */}
         <div className={styles.productsList}>
           {cartItems.length > 0 ? (
             cartItems.map((item) => (
               <div key={item.product.id} className={styles.cartItem}>
-                <img src={item.product.media[0]} alt={item.product.title} />
+                <img
+                  src={item.product.media[0]}
+                  alt={item.product.title}
+                  className={styles.itemImage}
+                />
+
                 <div className={styles.cartInfo}>
                   <p className={styles.itemTitle}>{item.product.title}</p>
                   <p className={styles.itemPrice}>
                     {item.product.price.toLocaleString("ru-RU")} сум
                   </p>
+
                   <div className={styles.controlsRow}>
                     <div className={styles.countControls}>
-                      <button onClick={() => updateCount(item.product.id, -1)}>
+                      <button
+                        onClick={() => updateCount(item.product.id, -1)}
+                        className={styles.countBtn}
+                      >
                         -
                       </button>
                       <span>{item.count}</span>
-                      <button onClick={() => updateCount(item.product.id, 1)}>
+                      <button
+                        onClick={() => updateCount(item.product.id, 1)}
+                        className={styles.countBtn}
+                      >
                         +
                       </button>
                     </div>
+
                     <button
                       onClick={() => deleteItem(item.product.id)}
                       className={styles.deleteBtn}
@@ -111,21 +154,19 @@ export default function CartPage() {
               </div>
             ))
           ) : (
-            <p>Ваша корзина пуста.</p>
+            <p className={styles.emptyCart}>Ваша корзина пуста.</p>
           )}
         </div>
 
-        {/* RIGHT – summary */}
         <div className={styles.summaryBox}>
           <h2 className={styles.totalPrice}>
             {totalSum.toLocaleString("ru-RU")} сум
           </h2>
           <p>Итого товаров: {totalCount}</p>
           <p>Итого скидки: {totalDiscount.toLocaleString("ru-RU")} сум</p>
-          <button className={styles.checkoutBtn}>Оформить</button>
+          <button className={styles.checkoutBtn}>Оформить заказ</button>
         </div>
       </div>
     </div>
   );
 }
-  

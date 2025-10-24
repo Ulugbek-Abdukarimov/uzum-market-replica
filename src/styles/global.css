@@ -69,3 +69,17 @@ button {
 ::-webkit-scrollbar-thumb:hover {
   background: #999;
 }
+
+
+
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+html, body {
+  overflow-x: hidden;
+}
